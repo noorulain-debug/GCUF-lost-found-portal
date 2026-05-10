@@ -1,0 +1,742 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../store/slices/itemsSlice";
+import { FaCamera, FaUpload, FaTrash, FaMapMarkerAlt, FaTag, FaInfoCircle, FaUser, FaCheckCircle, FaHandHolding, FaSearch, FaGift } from "react-icons/fa";
+
+export default function FoundItemForm() {
+  const dispatch = useDispatch();
+  const fileInputRef = useRef(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    category: "",
+    location: "",
+    imageUrl: "",
+  });
+  
+  const [imageFile, setImageFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
+  const [errors, setErrors] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const res = await fetch("/api/profile");
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data);
+      } else {
+        window.location.href = "/loginPage"; 
+      }
+    }
+    fetchUser();
+  }, []);
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!form.title.trim()) newErrors.title = "Title is required";
+    if (!form.description.trim()) newErrors.description = "Description is required";
+    if (!form.category) newErrors.category = "Category is required";
+    if (!form.location.trim()) newErrors.location = "Location is required";
+    
+    return newErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        setMessage({ type: "error", text: "Please upload an image file" });
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setMessage({ type: "error", text: "Image size should be less than 5MB" });
+        return;
+      }
+      setImageFile(file);
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      
+      setMessage({ type: "", text: "" });
+    }
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const uploadImage = async (file) => {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onloadend = async () => {
+        const base64 = reader.result;
+        try {
+          const res = await fetch("/api/upload", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: base64 }),
+          });
+          const data = await res.json();
+          resolve(data.url);
+        } catch (err) {
+          reject(err);
+        }
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    
+    setLoading(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      let imageUrl = form.imageUrl;
+      if (imageFile) {
+        imageUrl = await uploadImage(imageFile);
+      }
+
+      await dispatch(addItem({ ...form, type: "found", imageUrl })).unwrap();
+
+      setMessage({ 
+        type: "success", 
+        text: "Found item reported successfully! The owner will be grateful for your honesty." 
+      });
+      
+      setForm({ 
+        title: "", 
+        description: "", 
+        category: "", 
+        location: "", 
+        imageUrl: "" 
+      });
+      setImageFile(null);
+      setImagePreview(null);
+      setErrors({});
+      
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      
+    } catch (err) {
+      setMessage({ 
+        type: "error", 
+        text: "Failed to submit report. Please try again." 
+      });
+    }
+
+    setLoading(false);
+  };
+
+  const handleClearForm = () => {
+    setForm({ 
+      title: "", 
+      description: "", 
+      category: "", 
+      location: "", 
+      imageUrl: "" 
+    });
+    setImageFile(null);
+    setImagePreview(null);
+    setErrors({});
+    setMessage({ type: "", text: "" });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  return (
+    <>
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .fade-in {
+          animation: fadeIn 0.6s ease-out;
+        }
+        
+        .input-focus-effect:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+        }
+        
+        .submit-btn {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border: none;
+          transition: all 0.3s ease;
+          color: white;
+          font-weight: 600;
+        }
+        
+        .submit-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .image-upload-area {
+          border: 2px dashed rgba(102, 126, 234, 0.3);
+          border-radius: 12px;
+          transition: all 0.3s ease;
+          background: rgba(102, 126, 234, 0.03);
+          cursor: pointer;
+        }
+        
+        .image-upload-area:hover {
+          background: rgba(102, 126, 234, 0.08);
+          border-color: #667eea;
+        }
+        
+        .card-hover-3d {
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-hover-3d:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1) !important;
+        }
+        
+        .form-gradient {
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 255, 0.95) 100%);
+          border-radius: 16px;
+        }
+        
+        .stat-card {
+          background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+          border-radius: 12px;
+          border: 1px solid rgba(102, 126, 234, 0.1);
+          transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+          border-color: rgba(102, 126, 234, 0.3);
+        }
+        
+        .found-header {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .icon-gradient {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        
+        .text-gradient {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        
+        .btn-outline-gradient {
+          border: 2px solid;
+          border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-image-slice: 1;
+          color: #667eea;
+        }
+        
+        .btn-outline-gradient:hover {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+        
+        .form-label {
+          color: #4a5568;
+          font-weight: 600;
+        }
+        
+        /* Mobile Responsive Styles - COMPACT */
+        @media (max-width: 768px) {
+          .card-header {
+            padding: 0.75rem !important;
+          }
+          
+          .card-header h1 {
+            font-size: 1rem !important;
+          }
+          
+          .card-header p {
+            font-size: 0.72rem !important;
+          }
+          
+          .card-body {
+            padding: 0.75rem !important;
+          }
+          
+          .form-label {
+            font-size: 0.75rem !important;
+          }
+          
+          .stat-card .card-body {
+            padding: 0.75rem !important;
+          }
+        }
+        
+        @media (max-width: 576px) {
+          .container {
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+          }
+          
+          .py-4 {
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+          }
+          
+          .card-header {
+            padding: 0.6rem !important;
+          }
+          
+          .card-header .rounded-circle {
+            padding: 6px !important;
+          }
+          
+          .card-header h1 {
+            font-size: 0.9rem !important;
+          }
+          
+          .card-header p {
+            font-size: 0.68rem !important;
+          }
+          
+          .card-body {
+            padding: 0.6rem !important;
+          }
+          
+          .form-label {
+            font-size: 0.7rem !important;
+            margin-bottom: 3px !important;
+          }
+          
+          .form-control,
+          .form-select {
+            padding: 8px 10px !important;
+            font-size: 16px !important;
+            border-radius: 6px !important;
+          }
+          
+          textarea.form-control {
+            min-height: 80px;
+          }
+          
+          .image-upload-area {
+            padding: 1rem !important;
+          }
+          
+          .image-upload-area p {
+            font-size: 0.72rem !important;
+          }
+          
+          .image-upload-area svg {
+            width: 20px;
+            height: 20px;
+          }
+          
+          .mb-4 {
+            margin-bottom: 0.75rem !important;
+          }
+          
+          .row.g-3 {
+            --bs-gutter-x: 0.5rem;
+            --bs-gutter-y: 0.5rem;
+          }
+          
+          .d-flex.gap-3.justify-content-end {
+            flex-direction: column-reverse;
+            gap: 0.5rem !important;
+            margin-top: 0.75rem !important;
+            padding-top: 0.75rem !important;
+          }
+          
+          .d-flex.gap-3.justify-content-end .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 8px 16px !important;
+            font-size: 0.8rem !important;
+          }
+          
+          .stat-card {
+            display: none;
+          }
+          
+          .alert {
+            padding: 8px 10px !important;
+            font-size: 0.75rem !important;
+            border-radius: 6px !important;
+          }
+          
+          .alert svg {
+            flex-shrink: 0;
+            width: 14px;
+            height: 14px;
+          }
+        }
+        
+        /* Touch-friendly interactions */
+        @media (hover: none) {
+          .card-hover-3d:hover {
+            transform: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+          }
+          
+          .btn:active {
+            transform: scale(0.97);
+          }
+        }
+        
+        .form-control, .form-select {
+          border-radius: 10px;
+          border: 1px solid #e2e8f0;
+          padding: 0.75rem 1rem;
+          font-size: 0.95rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+        }
+        
+        .alert-success {
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+          border: 1px solid rgba(16, 185, 129, 0.2);
+          color: #065f46;
+        }
+        
+        .alert-danger {
+          background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+          border: 1px solid rgba(239, 68, 68, 0.2);
+          color: #7f1d1d;
+        }
+      `}</style>
+
+      <div className="container py-4 fade-in">
+        <div className="row justify-content-center">
+          <div className="col-lg-8">
+          
+            {user && (
+              <div className="card shadow-sm border-0 mb-4 stat-card">
+                <div className="card-body p-4">
+                  <div className="d-flex align-items-center">
+                    <div className="rounded-circle p-2 me-3" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                      <FaUser size={20} className="text-white" />
+                    </div>
+                    <div>
+                      <h6 className="mb-1 fw-bold text-gradient">Reporting as: {user.name || "Student"}</h6>
+                      <small className="text-muted">GCUF Campus Member</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          
+            <div className="card shadow-lg border-0 card-hover-3d overflow-hidden mb-4">
+             
+              <div className="card-header found-header text-white py-4 px-4">
+                <div className="d-flex align-items-center">
+                  <div className="rounded-circle p-2 me-3">
+                    <FaHandHolding size={24} className="icon-gradient" />
+                  </div>
+                  <div>
+                    <h1 className="h3 fw-bold mb-1">Report Found Item</h1>
+                    <p className="mb-0 opacity-90">Help reunite lost items with their grateful owners</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="card-body p-4 form-gradient">
+                {message.text && (
+                  <div className={`alert alert-${message.type === "success" ? "success" : "danger"} alert-dismissible fade show d-flex align-items-center p-3 mb-4 rounded-lg`} role="alert">
+                    <FaCheckCircle className="me-3" size={18} />
+                    <div className="flex-grow-1 fw-medium">{message.text}</div>
+                    <button 
+                      type="button" 
+                      className="btn-close" 
+                      onClick={() => setMessage({ type: "", text: "" })}
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit}>
+                
+                  <div className="mb-4">
+                    <label htmlFor="title" className="form-label d-flex align-items-center mb-2">
+                      <FaTag className="me-2" style={{ color: '#667eea' }} size={16} />
+                      Item Title <span className="text-danger ms-1">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="title"
+                      name="title"
+                      value={form.title}
+                      onChange={handleChange}
+                      placeholder="e.g., 'Black Wallet', 'Laptop Bag', 'Student ID'"
+                      className={`form-control ${errors.title ? "is-invalid" : ""} input-focus-effect`}
+                      required
+                    />
+                    {errors.title && (
+                      <div className="invalid-feedback d-flex align-items-center">
+                        {errors.title}
+                      </div>
+                    )}
+                  </div>
+
+               
+                  <div className="mb-4">
+                    <label htmlFor="description" className="form-label d-flex align-items-center mb-2">
+                      <FaInfoCircle className="me-2" style={{ color: '#667eea' }} size={16} />
+                      Description <span className="text-danger ms-1">*</span>
+                    </label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      value={form.description}
+                      onChange={handleChange}
+                      placeholder="Describe what you found. Include details like color, brand, contents (if applicable), and condition..."
+                      rows="3"
+                      className={`form-control ${errors.description ? "is-invalid" : ""} input-focus-effect`}
+                      required
+                    />
+                    {errors.description && (
+                      <div className="invalid-feedback d-flex align-items-center">
+                        {errors.description}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="row g-3 mb-4">
+                
+                    <div className="col-md-6">
+                      <label htmlFor="category" className="form-label d-flex align-items-center mb-2">
+                        <FaTag className="me-2" style={{ color: '#667eea' }} size={16} />
+                        Category <span className="text-danger ms-1">*</span>
+                      </label>
+                      <select
+                        id="category"
+                        name="category"
+                        value={form.category}
+                        onChange={handleChange}
+                        className={`form-select ${errors.category ? "is-invalid" : ""} input-focus-effect`}
+                        required
+                        style={{ 
+                            fontSize: '12px',
+                            height: '38px', /* Slightly reduced height for a more compact look */
+                            paddingTop: '4px',
+                            paddingBottom: '4px'
+                           }}
+                      >
+                        <option value="" style={{ fontSize: '12px' }}>Select category</option>
+                        <option value="electronics" style={{ fontSize: '12px' }}>Electronics</option>
+                        <option value="stationary" style={{ fontSize: '12px' }}>Stationary</option>
+                        <option value="documents" style={{ fontSize: '12px' }}>Documents</option>
+                        <option value="jewelry" style={{ fontSize: '12px' }}>Jewelry</option>
+                        <option value="clothing" style={{ fontSize: '12px' }}>Clothing</option>
+                        <option value="keys" style={{ fontSize: '12px' }}>Keys</option>
+                        <option value="bags" style={{ fontSize: '12px' }}>Bags & Wallets</option>
+                        <option value="other" style={{ fontSize: '12px' }}>Other</option>
+                      </select>
+                      {errors.category && (
+                        <div className="invalid-feedback d-flex align-items-center">
+                          {errors.category}
+                        </div>
+                      )}
+                    </div>
+
+                   
+                    <div className="col-md-6">
+                      <label htmlFor="location" className="form-label d-flex align-items-center mb-2">
+                        <FaMapMarkerAlt className="me-2" style={{ color: '#667eea' }} size={16} />
+                        Found Location <span className="text-danger ms-1">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value={form.location}
+                        onChange={handleChange}
+                        placeholder="e.g., 'Library Entrance', 'Cafeteria Table #3'"
+                        className={`form-control ${errors.location ? "is-invalid" : ""} input-focus-effect`}
+                        required
+                      />
+                      {errors.location && (
+                        <div className="invalid-feedback d-flex align-items-center">
+                          {errors.location}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                
+                  <div className="mb-4">
+                    <label className="form-label d-flex align-items-center mb-2">
+                      <FaCamera className="me-2" style={{ color: '#667eea' }} size={14} />
+                      <span style={{ fontSize: '0.85rem' }}>Item Photo (Optional)</span>
+                    </label>
+                    
+                    {imagePreview ? (
+                      <div className="image-preview-container mb-2">
+                        <div className="image-preview position-relative mx-auto" style={{ maxWidth: '100%' }}>
+                          <img 
+                            src={imagePreview} 
+                            alt="Preview" 
+                            className="w-100 rounded-3 shadow-sm"
+                            style={{ 
+                              height: '140px', 
+                              objectFit: 'cover',
+                              border: '2px solid rgba(102, 126, 234, 0.2)'
+                            }}
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 m-1 shadow-sm"
+                            onClick={removeImage}
+                            style={{ width: '26px', height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}
+                          >
+                            <FaTrash size={10} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div 
+                        className="image-upload-area text-center p-3 mb-2 rounded-3"
+                        onClick={() => fileInputRef.current?.click()}
+                        style={{
+                          border: '2px dashed rgba(102, 126, 234, 0.3)',
+                          background: 'rgba(102, 126, 234, 0.03)',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <FaUpload size={20} className="mb-2" style={{ color: '#667eea' }} />
+                        <p className="mb-1 fw-semibold" style={{ color: '#4a5568', fontSize: '0.8rem' }}>Tap to upload photo</p>
+                        <p className="text-muted mb-0" style={{ fontSize: '0.68rem' }}>PNG, JPG up to 5MB</p>
+                      </div>
+                    )}
+                    
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      id="imageUpload"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="d-none"
+                    />
+                  </div>
+
+                 
+                  <div className="d-flex gap-3 justify-content-end mt-4 pt-4 border-top">
+                    <button
+                      type="button"
+                      className="btn btn-outline-gradient px-4 py-2 rounded-pill fw-medium"
+                      onClick={handleClearForm}
+                      disabled={loading}
+                    >
+                      <FaTrash className="me-2" size={14} />
+                      Clear Form
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn submit-btn px-5 py-2 rounded-pill fw-bold"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <FaCheckCircle className="me-2" />
+                          Submit Found Item
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          
+            <div className="card shadow-sm border-0 stat-card">
+              <div className="card-body p-4">
+                <div className="row g-3">
+                  <div className="col-4">
+                    <div className="text-center p-2">
+                      <div className="h4 fw-bold mb-2">
+                        <FaHandHolding className="icon-gradient" />
+                      </div>
+                      <div className="small fw-semibold" style={{ color: '#4a5568' }}>Helping Others</div>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="text-center p-2">
+                      <div className="h4 fw-bold mb-2">
+                        <FaCheckCircle className="icon-gradient" />
+                      </div>
+                      <div className="small fw-semibold" style={{ color: '#4a5568' }}>Good Deeds</div>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="text-center p-2">
+                      <div className="h4 fw-bold mb-2">
+                        <FaGift className="icon-gradient" />
+                      </div>
+                      <div className="small fw-semibold" style={{ color: '#4a5568' }}>Positive Impact</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
