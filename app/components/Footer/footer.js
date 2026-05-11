@@ -143,15 +143,15 @@ export default function Footer() {
             <ul className="list-unstyled mb-0">
               <li className="mb-3 d-flex align-items-start gap-2">
                 <FaMapMarkerAlt size={13} style={{ color: '#667eea', marginTop: '3px', flexShrink: 0 }} />
-                <span className="text-light opacity-75 small" style={{ fontSize: '0.65rem' }}>GCUF Campus, Faisalabad</span>
+                <span className="text-light opacity-75 small" style={{ fontSize: '0.7rem' }}>GCUF Campus, Faisalabad</span>
               </li>
               <li className="mb-3 d-flex align-items-start gap-2">
                 <FaPhone size={13} style={{ color: '#667eea', marginTop: '3px', flexShrink: 0 }} />
-                <span className="text-light opacity-75 small" style={{ fontSize: '0.65rem' }}>+92 3208711060</span>
+                <span className="text-light opacity-75 small" style={{ fontSize: '0.7rem' }}>+92 3208711060</span>
               </li>
               <li className="d-flex align-items-start gap-2">
                 <FaEnvelope size={13} style={{ color: '#667eea', marginTop: '3px', flexShrink: 0 }} />
-                <span className="text-light opacity-75 small contact-email" style={{ fontSize: '0.65rem' }}>lostfoundgcuf@gmail.com </span>
+                <span className="text-light opacity-75 small contact-email" style={{ fontSize: '0.7rem' }}>lostfoundgcuf@gmail.com </span>
               </li>
             </ul>
           </div>

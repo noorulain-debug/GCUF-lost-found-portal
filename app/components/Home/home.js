@@ -331,7 +331,7 @@ export default function Home() {
           }
           
           .stat-card {
-            padding: 0.75rem !important;
+            padding: 0.85rem !important;
           }
         }
         
