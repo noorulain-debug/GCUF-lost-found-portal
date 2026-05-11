@@ -321,7 +321,7 @@ export default function Navbar() {
               <img
                 src="/images/L.png"
                 alt="Lost & Found Logo"
-                style={{ width: "90px", height: "60px" }} // smaller for mobile
+                style={{ width: "90px", height: "84px" }} // smaller for mobile
                 className="me-2 logo-glow"
               />
             </div>
