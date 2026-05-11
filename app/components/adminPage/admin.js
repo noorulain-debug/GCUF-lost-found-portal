@@ -1526,7 +1526,7 @@ export default function AdminDashboard() {
 
       {deleteConfirm && (
         <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center admin-confirm-overlay"
           style={{
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             zIndex: 1050,
@@ -1536,7 +1536,7 @@ export default function AdminDashboard() {
           onClick={closeDeleteModal}
         >
           <div
-            className="bg-white rounded-3 shadow-lg"
+            className="bg-white rounded-3 shadow-lg admin-confirm-modal"
             style={{
               maxWidth: "500px",
               width: "100%",
@@ -1547,7 +1547,7 @@ export default function AdminDashboard() {
             onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="text-white rounded-top-3 p-4"
+              className="text-white rounded-top-3 p-4 admin-confirm-header"
               style={{
                 background: "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)",
               }}
@@ -1556,7 +1556,7 @@ export default function AdminDashboard() {
                 <h5 className="modal-title fw-bold mb-0">Confirm Delete</h5>
                 <button
                   type="button"
-                  className="btn btn-sm btn-light rounded-circle"
+                  className="btn btn-sm btn-light rounded-circle admin-confirm-close"
                   onClick={closeDeleteModal}
                   style={{ width: "32px", height: "32px" }}
                 >
@@ -1565,11 +1565,11 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="p-4 text-center">
+            <div className="p-4 text-center admin-confirm-body">
               <FaExclamationTriangle
                 size={48}
                 style={{ color: "#ef4444" }}
-                className="mb-3"
+                className="mb-3 admin-confirm-icon"
               />
               <p style={{ color: "#764ba2" }}>
                 Are you sure you want to delete{" "}
@@ -1582,7 +1582,7 @@ export default function AdminDashboard() {
               </p>
             </div>
 
-            <div className="p-4 border-top d-flex gap-3">
+            <div className="p-4 border-top d-flex gap-3 admin-confirm-footer">
               <button
                 type="button"
                 className="btn btn-secondary flex-grow-1"
@@ -1616,7 +1616,7 @@ export default function AdminDashboard() {
 
       {deleteUserConfirm && (
         <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center admin-confirm-overlay"
           style={{
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             zIndex: 1050,
@@ -1626,7 +1626,7 @@ export default function AdminDashboard() {
           onClick={closeDeleteUserModal}
         >
           <div
-            className="bg-white rounded-3 shadow-lg"
+            className="bg-white rounded-3 shadow-lg admin-confirm-modal"
             style={{
               maxWidth: "520px",
               width: "100%",
@@ -1637,7 +1637,7 @@ export default function AdminDashboard() {
             onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="text-white rounded-top-3 p-4"
+              className="text-white rounded-top-3 p-4 admin-confirm-header"
               style={{
                 background: "linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)",
               }}
@@ -1646,7 +1646,7 @@ export default function AdminDashboard() {
                 <h5 className="modal-title fw-bold mb-0">Delete User Account</h5>
                 <button
                   type="button"
-                  className="btn btn-sm btn-light rounded-circle"
+                  className="btn btn-sm btn-light rounded-circle admin-confirm-close"
                   onClick={closeDeleteUserModal}
                   style={{ width: "32px", height: "32px" }}
                 >
@@ -1655,11 +1655,11 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="p-4 text-center">
+            <div className="p-4 text-center admin-confirm-body">
               <FaExclamationTriangle
                 size={48}
                 style={{ color: "#ef4444" }}
-                className="mb-3"
+                className="mb-3 admin-confirm-icon"
               />
               <p style={{ color: "#764ba2" }}>
                 Delete{" "}
@@ -1674,7 +1674,7 @@ export default function AdminDashboard() {
               </p>
             </div>
 
-            <div className="p-4 border-top d-flex gap-3">
+            <div className="p-4 border-top d-flex gap-3 admin-confirm-footer">
               <button
                 type="button"
                 className="btn btn-secondary flex-grow-1"

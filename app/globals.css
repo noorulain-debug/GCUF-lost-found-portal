@@ -1419,9 +1419,74 @@ html, body {
 }
 
 .admin-report-modal-footer .btn {
-  min-height: 36px;
+  min-height: 26px;
   border-radius: 10px;
   font-size: 0.82rem;
+}
+
+.admin-confirm-overlay {
+  backdrop-filter: blur(2px);
+}
+
+.admin-confirm-modal {
+  max-width: 340px !important;
+  overflow: hidden;
+  border: 1px solid rgba(239, 68, 68, 0.12);
+}
+
+.admin-confirm-header {
+  padding: 14px 16px !important;
+}
+
+.admin-confirm-header .modal-title {
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.admin-confirm-close {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+}
+
+.admin-confirm-close svg {
+  width: 12px;
+  height: 12px;
+}
+
+.admin-confirm-body {
+  padding: 16px 18px 14px !important;
+}
+
+.admin-confirm-icon {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 10px !important;
+}
+
+.admin-confirm-body p {
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.admin-confirm-body .small {
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.admin-confirm-footer {
+  gap: 8px !important;
+  padding: 12px 14px 14px !important;
+}
+
+.admin-confirm-footer .btn {
+  min-height: 36px;
+  padding: 7px 12px !important;
+  border-radius: 10px !important;
+  font-size: 0.82rem !important;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -1451,6 +1516,20 @@ html, body {
   .admin-report-detail-tile {
     padding: 8px;
   }
+
+  .admin-confirm-overlay {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+  }
+
+  .admin-confirm-overlay > .admin-confirm-modal {
+    width: min(100%, 318px) !important;
+    max-width: 318px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 16px !important;
+  }
 }
 
 @media (max-width: 420px) {
@@ -1477,6 +1556,26 @@ html, body {
 
   .admin-report-modal-overlay > .admin-report-modal {
     width: min(100%, 326px) !important;
+  }
+
+  .admin-confirm-overlay {
+    padding: 12px !important;
+  }
+
+  .admin-confirm-overlay > .admin-confirm-modal {
+    width: min(100%, 300px) !important;
+  }
+
+  .admin-confirm-header {
+    padding: 12px 14px !important;
+  }
+
+  .admin-confirm-body {
+    padding: 14px 16px 12px !important;
+  }
+
+  .admin-confirm-footer {
+    padding: 10px 12px 12px !important;
   }
 
   .admin-report-modal-image {

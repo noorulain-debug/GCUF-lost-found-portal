@@ -188,8 +188,8 @@ export default function Navbar() {
           }
           
           .navbar-brand img {
-            width: 58px !important;
-            height: 38px !important;
+            width: 48px !important;
+            height: 44px !important;
           }
           
           .mobile-menu-dropdown {
