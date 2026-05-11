@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GCUF Lost &amp; Found</string>
+    <string name="title_activity_main">GCUF Lost &amp; Found</string>
+    <string name="package_name">com.gcuf.lostfound</string>
+    <string name="custom_url_scheme">com.gcuf.lostfound</string>
+</resources>

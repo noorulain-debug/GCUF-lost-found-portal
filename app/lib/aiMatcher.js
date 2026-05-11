@@ -2,7 +2,7 @@ import Item from "@/app/models/items";
 import { sendMatchEmail } from "@/app/lib/sendEmail";
 
 const DEFAULT_MODEL = "Xenova/all-MiniLM-L6-v2";
-const DEFAULT_THRESHOLD = 0.4;
+const DEFAULT_THRESHOLD = 0.5;
 
 let extractorPromise;
 
