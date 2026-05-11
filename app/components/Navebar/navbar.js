@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   FaSearch,
   FaPlusCircle,
@@ -15,6 +16,7 @@ import {
 } from 'react-icons/fa';
 
 export default function Navbar() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -62,6 +64,11 @@ export default function Navbar() {
     await fetch("/api/logout", { method: "POST" });
     setUser(null);
     closeAll();
+    try {
+      localStorage.setItem("logout", Date.now().toString());
+    } catch (e) {}
+    router.replace("/loginPage");
+    router.refresh();
   };
 
   return (

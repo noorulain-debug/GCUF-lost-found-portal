@@ -650,7 +650,7 @@ export default function Home() {
                     <FaBookOpen size={14} />
                   </div>
                   <h3 className="fw-bold mb-0 text-gray-800" style={{ fontSize: '0.7rem' }}>Common spot</h3>
-                  <div className="fw-bold" style={{ color: '#667eea', fontSize: '0.4rem' }}>library</div>
+                  <div className="fw-bold" style={{ color: '#667eea', fontSize: '0.6rem' }}>Library</div>
                 </div>
               </div>
 

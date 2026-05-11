@@ -8,11 +8,6 @@ import { FaCamera, FaUpload, FaTrash, FaMapMarkerAlt, FaTag, FaInfoCircle, FaUse
 export default function FoundItemForm() {
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const [form, setForm] = useState({
     title: "",
@@ -288,7 +283,76 @@ export default function FoundItemForm() {
         
         .form-label {
           color: #4a5568;
+          font-size: 0.84rem;
           font-weight: 600;
+          line-height: 1.2;
+          margin-bottom: 0.4rem;
+        }
+
+        .form-label svg {
+          width: 13px !important;
+          height: 13px !important;
+          flex-shrink: 0;
+        }
+
+        .form-control, .form-select {
+          border-radius: 10px;
+          border: 1px solid #e2e8f0;
+          min-height: 42px;
+          padding: 0.65rem 0.85rem;
+          font-size: 0.88rem;
+          line-height: 1.35;
+        }
+
+        .form-control::placeholder {
+          color: #64748b;
+          font-size: 0.86rem;
+        }
+
+        .form-select,
+        .form-select option {
+          font-size: 0.86rem;
+        }
+
+        .image-preview {
+          overflow: hidden;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .image-preview img {
+          display: block;
+          width: 100%;
+          height: 180px;
+          object-fit: contain;
+        }
+
+        .image-remove-btn {
+          width: 32px !important;
+          height: 32px !important;
+          min-width: 32px;
+          padding: 0 !important;
+          border-radius: 50% !important;
+          display: inline-flex !important;
+          align-items: center;
+          justify-content: center;
+          aspect-ratio: 1 / 1;
+          line-height: 1;
+        }
+
+        .image-remove-btn svg {
+          width: 12px;
+          height: 12px;
+        }
+
+        .image-upload-title {
+          color: #4a5568;
+          font-size: 0.82rem;
+        }
+
+        .image-upload-hint {
+          font-size: 0.7rem;
         }
         
         /* Mobile Responsive Styles - COMPACT */
@@ -310,7 +374,7 @@ export default function FoundItemForm() {
           }
           
           .form-label {
-            font-size: 0.75rem !important;
+            font-size: 0.8rem !important;
           }
           
           .stat-card .card-body {
@@ -350,32 +414,66 @@ export default function FoundItemForm() {
           }
           
           .form-label {
-            font-size: 0.7rem !important;
-            margin-bottom: 3px !important;
+            font-size: 0.78rem !important;
+            margin-bottom: 4px !important;
+          }
+
+          .form-label svg {
+            width: 12px !important;
+            height: 12px !important;
           }
           
           .form-control,
           .form-select {
-            padding: 8px 10px !important;
-            font-size: 16px !important;
+            min-height: 38px !important;
+            padding: 7px 10px !important;
+            font-size: 0.75rem !important;
             border-radius: 6px !important;
+          }
+
+          .form-select,
+          .form-select option {
+            font-size: 0.75rem !important;
+          }
+
+          .form-control::placeholder {
+            font-size: 0.65rem;
           }
           
           textarea.form-control {
             min-height: 80px;
+            line-height: 1.35;
+          }
+
+          input.form-control {
+            line-height: 1.25;
+          }
+
+          .image-preview img {
+            height: 150px;
           }
           
           .image-upload-area {
             padding: 1rem !important;
           }
           
-          .image-upload-area p {
-            font-size: 0.72rem !important;
+          .image-upload-title {
+            font-size: 0.78rem;
+          }
+
+          .image-upload-hint {
+            font-size: 0.68rem;
           }
           
           .image-upload-area svg {
             width: 20px;
             height: 20px;
+          }
+
+          .image-remove-btn {
+            width: 30px !important;
+            height: 30px !important;
+            min-width: 30px;
           }
           
           .mb-4 {
@@ -410,6 +508,12 @@ export default function FoundItemForm() {
             font-size: 0.75rem !important;
             border-radius: 6px !important;
           }
+
+          .compact-status-alert {
+            padding: 7px 34px 7px 10px !important;
+            margin-bottom: 0.75rem !important;
+            min-height: auto;
+          }
           
           .alert svg {
             flex-shrink: 0;
@@ -428,13 +532,6 @@ export default function FoundItemForm() {
           .btn:active {
             transform: scale(0.97);
           }
-        }
-        
-        .form-control, .form-select {
-          border-radius: 10px;
-          border: 1px solid #e2e8f0;
-          padding: 0.75rem 1rem;
-          font-size: 0.95rem;
         }
         
         .form-control:focus, .form-select:focus {
@@ -492,12 +589,12 @@ export default function FoundItemForm() {
               
               <div className="card-body p-4 form-gradient">
                 {message.text && (
-                  <div className={`alert alert-${message.type === "success" ? "success" : "danger"} alert-dismissible fade show d-flex align-items-center p-3 mb-4 rounded-lg`} role="alert">
-                    <FaCheckCircle className="me-3" size={18} />
-                    <div className="flex-grow-1 fw-medium">{message.text}</div>
+                  <div className={`alert alert-${message.type === "success" ? "success" : "danger"} alert-dismissible fade show d-flex align-items-center compact-status-alert rounded-lg`} role="alert">
+                    <FaCheckCircle className="me-2" size={14} />
+                    <div className="flex-grow-1 fw-medium small">{message.text}</div>
                     <button 
                       type="button" 
-                      className="btn-close" 
+                      className="btn-close btn-close-sm" 
                       onClick={() => setMessage({ type: "", text: "" })}
                       aria-label="Close"
                     ></button>
@@ -508,13 +605,12 @@ export default function FoundItemForm() {
                 
                   <div className="mb-4">
                     <label htmlFor="title" className="form-label d-flex align-items-center mb-2">
-                      <FaTag className="me-2" style={{ color: '#667eea' }} size={16} />
+                      <FaTag className="me-2" style={{ color: '#667eea' }} />
                       Item Title <span className="text-danger ms-1">*</span>
                     </label>
                     <input
                       type="text"
-                      id="title"
-                      name="title"
+                      id="title"                      name="title"
                       value={form.title}
                       onChange={handleChange}
                       placeholder="e.g., 'Black Wallet', 'Laptop Bag', 'Student ID'"
@@ -531,7 +627,7 @@ export default function FoundItemForm() {
                
                   <div className="mb-4">
                     <label htmlFor="description" className="form-label d-flex align-items-center mb-2">
-                      <FaInfoCircle className="me-2" style={{ color: '#667eea' }} size={16} />
+                      <FaInfoCircle className="me-2" style={{ color: '#667eea' }} />
                       Description <span className="text-danger ms-1">*</span>
                     </label>
                     <textarea
@@ -555,7 +651,7 @@ export default function FoundItemForm() {
                 
                     <div className="col-md-6">
                       <label htmlFor="category" className="form-label d-flex align-items-center mb-2">
-                        <FaTag className="me-2" style={{ color: '#667eea' }} size={16} />
+                        <FaTag className="me-2" style={{ color: '#667eea' }} />
                         Category <span className="text-danger ms-1">*</span>
                       </label>
                       <select
@@ -565,22 +661,16 @@ export default function FoundItemForm() {
                         onChange={handleChange}
                         className={`form-select ${errors.category ? "is-invalid" : ""} input-focus-effect`}
                         required
-                        style={{ 
-                            fontSize: '12px',
-                            height: '38px', /* Slightly reduced height for a more compact look */
-                            paddingTop: '4px',
-                            paddingBottom: '4px'
-                           }}
                       >
-                        <option value="" style={{ fontSize: '12px' }}>Select category</option>
-                        <option value="electronics" style={{ fontSize: '12px' }}>Electronics</option>
-                        <option value="stationary" style={{ fontSize: '12px' }}>Stationary</option>
-                        <option value="documents" style={{ fontSize: '12px' }}>Documents</option>
-                        <option value="jewelry" style={{ fontSize: '12px' }}>Jewelry</option>
-                        <option value="clothing" style={{ fontSize: '12px' }}>Clothing</option>
-                        <option value="keys" style={{ fontSize: '12px' }}>Keys</option>
-                        <option value="bags" style={{ fontSize: '12px' }}>Bags & Wallets</option>
-                        <option value="other" style={{ fontSize: '12px' }}>Other</option>
+                        <option value="">Select category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="stationary">Stationary</option>
+                        <option value="documents">Documents</option>
+                        <option value="jewelry">Jewelry</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="keys">Keys</option>
+                        <option value="bags">Bags & Wallets</option>
+                        <option value="other">Other</option>
                       </select>
                       {errors.category && (
                         <div className="invalid-feedback d-flex align-items-center">
@@ -592,7 +682,7 @@ export default function FoundItemForm() {
                    
                     <div className="col-md-6">
                       <label htmlFor="location" className="form-label d-flex align-items-center mb-2">
-                        <FaMapMarkerAlt className="me-2" style={{ color: '#667eea' }} size={16} />
+                        <FaMapMarkerAlt className="me-2" style={{ color: '#667eea' }} />
                         Found Location <span className="text-danger ms-1">*</span>
                       </label>
                       <input
@@ -616,8 +706,8 @@ export default function FoundItemForm() {
                 
                   <div className="mb-4">
                     <label className="form-label d-flex align-items-center mb-2">
-                      <FaCamera className="me-2" style={{ color: '#667eea' }} size={14} />
-                      <span style={{ fontSize: '0.85rem' }}>Item Photo (Optional)</span>
+                      <FaCamera className="me-2" style={{ color: '#667eea' }} />
+                      Item Photo (Optional)
                     </label>
                     
                     {imagePreview ? (
@@ -626,20 +716,15 @@ export default function FoundItemForm() {
                           <img 
                             src={imagePreview} 
                             alt="Preview" 
-                            className="w-100 rounded-3 shadow-sm"
-                            style={{ 
-                              height: '140px', 
-                              objectFit: 'cover',
-                              border: '2px solid rgba(102, 126, 234, 0.2)'
-                            }}
+                            className="shadow-sm"
                           />
                           <button
                             type="button"
-                            className="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 m-1 shadow-sm"
+                            className="btn btn-danger image-remove-btn position-absolute top-0 end-0 m-1 shadow-sm"
                             onClick={removeImage}
-                            style={{ width: '26px', height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}
+                            aria-label="Remove image"
                           >
-                            <FaTrash size={10} />
+                            <FaTrash />
                           </button>
                         </div>
                       </div>
@@ -647,16 +732,10 @@ export default function FoundItemForm() {
                       <div 
                         className="image-upload-area text-center p-3 mb-2 rounded-3"
                         onClick={() => fileInputRef.current?.click()}
-                        style={{
-                          border: '2px dashed rgba(102, 126, 234, 0.3)',
-                          background: 'rgba(102, 126, 234, 0.03)',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease'
-                        }}
                       >
                         <FaUpload size={20} className="mb-2" style={{ color: '#667eea' }} />
-                        <p className="mb-1 fw-semibold" style={{ color: '#4a5568', fontSize: '0.8rem' }}>Tap to upload photo</p>
-                        <p className="text-muted mb-0" style={{ fontSize: '0.68rem' }}>PNG, JPG up to 5MB</p>
+                        <p className="image-upload-title mb-1 fw-semibold">Tap to upload photo</p>
+                        <p className="image-upload-hint text-muted mb-0">PNG, JPG up to 5MB</p>
                       </div>
                     )}
                     

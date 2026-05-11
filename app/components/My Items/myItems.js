@@ -17,6 +17,7 @@ import {
   FaCheckCircle,
   FaCheck,
   FaHistory,
+  FaImage,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
 
@@ -26,7 +27,6 @@ export default function MyItemsPage() {
 
   
   const {
-    items: reduxItems = [],
     loading,
     error,
   } = useSelector((state) => state.myItems || {});
@@ -56,13 +56,6 @@ export default function MyItemsPage() {
   const [resolvingItem, setResolvingItem] = useState(null);
   const [resolving, setResolving] = useState(false);
 
-  
-  useEffect(() => {
-    if (reduxItems.length > 0) {
-      setItems(reduxItems);
-    }
-  }, [reduxItems]);
-
   useEffect(() => {
     let interval;
 
@@ -73,7 +66,8 @@ export default function MyItemsPage() {
           router.push("/loginPage");
           return;
         }
-        dispatch(fetchMyItems());
+        const fetchedItems = await dispatch(fetchMyItems()).unwrap();
+        setItems(fetchedItems || []);
       } catch (err) {
         router.push("/loginPage");
       } finally {
@@ -400,6 +394,27 @@ export default function MyItemsPage() {
 
         .image-container img {
           transition: transform 0.6s ease;
+        }
+
+        .my-item-placeholder {
+          width: 100%;
+          height: 100%;
+          background: #eef1f8;
+          color: #667eea;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          font-size: 0.78rem;
+          font-weight: 600;
+          text-align: center;
+        }
+
+        .my-item-placeholder svg {
+          width: 24px;
+          height: 24px;
+          opacity: 0.8;
         }
 
         .item-card:hover .image-container img {
@@ -799,9 +814,33 @@ export default function MyItemsPage() {
             font-size: 0.68rem !important;
             border-radius: 6px !important;
           }
+
+          .my-items-filter-row {
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 5px !important;
+          }
+
+          .my-items-filter-row .filter-btn {
+            width: 100%;
+            min-width: 0;
+            padding: 5px 3px !important;
+            font-size: 0.58rem !important;
+            white-space: nowrap;
+          }
           
           .image-container {
             height: 90px !important;
+          }
+
+          .my-item-placeholder {
+            gap: 4px;
+            font-size: 0.58rem;
+          }
+
+          .my-item-placeholder svg {
+            width: 18px;
+            height: 18px;
           }
           
           .type-badge,
@@ -818,6 +857,18 @@ export default function MyItemsPage() {
           
           .item-card .card-body p {
             font-size: 0.68rem !important;
+          }
+
+          .my-item-meta,
+          .my-item-meta span {
+            font-size: 0.58rem !important;
+            line-height: 1.2;
+          }
+
+          .my-item-meta svg {
+            width: 9px;
+            height: 9px;
+            margin-right: 4px !important;
           }
           
           .action-btn {
@@ -983,7 +1034,7 @@ export default function MyItemsPage() {
               </div>
             </div>
             <div className="col-md-6">
-              <div className="d-flex flex-wrap gap-2">
+              <div className="d-flex flex-wrap gap-2 my-items-filter-row">
                 <button
                   className={`filter-btn btn px-3 py-2 rounded-pill fw-medium ${activeFilter === "all" ? "active" : ""
                     }`}
@@ -1135,11 +1186,18 @@ export default function MyItemsPage() {
               <div key={item._id} className="col-md-6 col-lg-4">
                 <div className="item-card h-100 shadow-sm">
                   <div className="image-container position-relative">
-                    <img
-                      src={item.imageUrl || "/placeholder.jpg"}
-                      className="card-img-top w-100 h-100 object-cover"
-                      alt={item.title}
-                    />
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        className="card-img-top w-100 h-100 object-cover"
+                        alt={item.title}
+                      />
+                    ) : (
+                      <div className="my-item-placeholder">
+                        <FaImage />
+                        <span>No image</span>
+                      </div>
+                    )}
                     <div className="position-absolute top-0 start-0 m-3 d-flex flex-column gap-1">
                       <span
                         className="type-badge text-white"
@@ -1179,7 +1237,7 @@ export default function MyItemsPage() {
                     </p>
 
                     <div className="mb-3">
-                      <div className="d-flex align-items-center small mb-2">
+                      <div className="d-flex align-items-center small mb-2 my-item-meta">
                         <FaMapMarkerAlt
                           className="me-2 flex-shrink-0"
                           style={{ color: "#667eea" }}
@@ -1194,7 +1252,7 @@ export default function MyItemsPage() {
                       </div>
 
                       {item.date && (
-                        <div className="d-flex align-items-center small">
+                        <div className="d-flex align-items-center small my-item-meta">
                           <FaCalendarAlt
                             className="me-2 flex-shrink-0"
                             style={{ color: "#667eea" }}

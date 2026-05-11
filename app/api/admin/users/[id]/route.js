@@ -64,7 +64,6 @@ export async function PATCH(req, context) {
     phone: updatedUser.phone,
     role: updatedUser.role,
     avatar: updatedUser.avatar,
-    bio: updatedUser.bio,
     location: updatedUser.location,
     createdAt: updatedUser.createdAt,
     updatedAt: updatedUser.updatedAt,

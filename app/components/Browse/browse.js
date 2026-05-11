@@ -25,30 +25,44 @@ export default function Browse() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
-
-  const checkAuth = async () => {
-    try {
-      const res = await fetch("/api/profile");
-      if (!res.ok) {
-        setUser(null);
-        return;
-      }
-      const data = await res.json();
-      setUser(data);
-    } catch (err) {
-      setUser(null);
-    } finally {
-      setCheckingAuth(false);
-    }
-  };
-
   useEffect(() => {
-    checkAuth();
+    let isMounted = true;
+
+    fetch("/api/profile")
+      .then(async (res) => {
+        if (!isMounted) return;
+
+        if (!res.ok) {
+          setUser(null);
+          return;
+        }
+
+        const data = await res.json();
+        if (isMounted) setUser(data);
+      })
+      .catch(() => {
+        if (isMounted) setUser(null);
+      })
+      .finally(() => {
+        if (isMounted) setCheckingAuth(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
     dispatch(fetchItems({ type: typeFilter, category: categoryFilter }));
   }, [dispatch, typeFilter, categoryFilter]);
+
+  useEffect(() => {
+    document.body.style.overflow = showModal ? "hidden" : "auto";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal]);
 
   const filteredItems = items.filter(item => {
     if (item.type === "resolved") return false;
@@ -74,13 +88,11 @@ export default function Browse() {
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setShowModal(true);
-    document.body.style.overflow = 'hidden';
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedItem(null);
-    document.body.style.overflow = 'auto';
   };
 
   const formatWhatsAppPhone = (phone) => {

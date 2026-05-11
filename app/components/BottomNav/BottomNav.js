@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FaHome,
   FaSearch,
@@ -13,6 +13,7 @@ import {
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [showAddMenu, setShowAddMenu] = useState(false);
 
@@ -47,6 +48,12 @@ export default function BottomNav() {
   const handleAddClick = (e) => {
     e.preventDefault();
     setShowAddMenu(!showAddMenu);
+  };
+
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    setShowAddMenu(false);
+    router.push(href);
   };
 
   return (
@@ -307,6 +314,7 @@ export default function BottomNav() {
                 key={index}
                 href={item.href}
                 className={`nav-item-bottom ${isActive(item.href) ? "active" : ""}`}
+                onClick={(e) => handleNavClick(e, item.href)}
               >
                 <Icon className="icon" />
                 <span className="label">{item.label}</span>

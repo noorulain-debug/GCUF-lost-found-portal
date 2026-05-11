@@ -30,6 +30,7 @@ import {
   FaPhone,
   FaMapPin,
   FaUserCog,
+  FaImage,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
 
@@ -722,15 +723,22 @@ export default function AdminDashboard() {
                     const typeColor = getTypeColor(item.type);
 
                     return (
-                      <div key={item._id} className="col-12 col-sm-6 col-lg-4">
-                       <div className="card border-0 shadow-sm h-100 rounded-4 overflow-hidden item-card">
-                          <div className="position-relative item-image-container admin-report-image-frame">
-                            <img
-                              src={item.imageUrl || "/placeholder.jpg"}
-                              loading="lazy"
-                              className="card-img-top w-100 h-100 admin-report-image"
-                              alt={item.title}
-                            />
+                      <div key={item._id} className="col-12 col-xl-6">
+                       <div className="card border-0 shadow-sm h-100 rounded-4 overflow-hidden item-card admin-item-card">
+                          <div className="position-relative item-image-container admin-report-image-frame admin-item-image-frame">
+                            {item.imageUrl ? (
+                              <img
+                                src={item.imageUrl}
+                                loading="lazy"
+                                className="card-img-top w-100 h-100 admin-report-image"
+                                alt={item.title}
+                              />
+                            ) : (
+                              <div className="admin-image-placeholder">
+                                <FaImage />
+                                <span>No image</span>
+                              </div>
+                            )}
                             <span
                               className="position-absolute top-0 start-0 m-3 px-3 py-1 rounded-pill text-white fw-bold"
                               style={{
@@ -743,7 +751,7 @@ export default function AdminDashboard() {
                             </span>
                           </div>
 
-                          <div className="card-body d-flex flex-column p-3">
+                          <div className="card-body d-flex flex-column p-3 admin-item-content">
                             <h5
                               className="fw-semibold fs-6 mb-1"
                               style={{ color: "#667eea" }}

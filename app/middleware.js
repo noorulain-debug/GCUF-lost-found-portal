@@ -6,17 +6,17 @@ export function middleware(req) {
   const { pathname } = req.nextUrl;
 
   
-  const protectedRoutes = ["/browse", "/found", "/lost"];
+  const protectedRoutes = ["/found", "/lost"];
   const adminRoutes = ["/admin"];
 
   
   if (protectedRoutes.some((route) => pathname.startsWith(route)) && !token) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return NextResponse.redirect(new URL("/loginPage", req.url));
   }
 
   
   if (adminRoutes.some((route) => pathname.startsWith(route))) {
-    if (!token) return NextResponse.redirect(new URL("/login", req.url));
+    if (!token) return NextResponse.redirect(new URL("/loginPage", req.url));
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -24,7 +24,7 @@ export function middleware(req) {
         return NextResponse.redirect(new URL("/unauthorized", req.url));
       }
     } catch {
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(new URL("/loginPage", req.url));
     }
   }
 
@@ -33,7 +33,6 @@ export function middleware(req) {
 
 export const config = {
   matcher: [
-    "/browse/:path*",
     "/found/:path*",
     "/lost/:path*",
     "/admin/:path*",

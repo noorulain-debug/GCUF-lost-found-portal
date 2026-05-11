@@ -653,6 +653,21 @@ html, body {
   position: relative;
 }
 
+.admin-header-icon {
+  width: 58px;
+  height: 58px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.admin-header-icon svg {
+  width: 34px;
+  height: 34px;
+}
+
 /* Better card hover */
 .item-card,
 .user-card,
@@ -695,6 +710,49 @@ html, body {
   object-fit: contain !important;
   border-radius: 12px;
   background: white;
+}
+
+.admin-image-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  border-radius: 12px;
+  background: #eef1f8;
+  color: #667eea;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.admin-image-placeholder svg {
+  width: 26px;
+  height: 26px;
+  opacity: 0.8;
+}
+
+.admin-item-card {
+  display: flex;
+  flex-direction: row;
+  min-height: 230px;
+}
+
+.admin-item-card .admin-item-image-frame {
+  width: 40%;
+  max-width: 260px;
+  min-width: 160px;
+  height: auto;
+  min-height: 230px;
+  flex: 0 0 40%;
+}
+
+.admin-item-content {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 /* Desktop image */
@@ -893,8 +951,8 @@ html, body {
   }
 
   .admin-header-icon {
-    width: 40px;
-    height: 40px;
+    width: 46px;
+    height: 46px;
     padding: 0 !important;
     display: inline-flex;
     align-items: center;
@@ -904,8 +962,8 @@ html, body {
   }
 
   .admin-header-icon svg {
-    width: 22px;
-    height: 22px;
+    width: 29px;
+    height: 29px;
   }
 
   .admin-header h1 {
@@ -1062,6 +1120,13 @@ html, body {
     box-shadow: 0 4px 16px rgba(20, 26, 49, 0.07) !important;
   }
 
+  .admin-item-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start;
+    min-height: 0;
+  }
+
   .item-image-container {
     height: 132px;
   }
@@ -1071,10 +1136,20 @@ html, body {
     padding: 8px;
   }
 
+  .admin-item-card .admin-item-image-frame {
+    width: 104px;
+    min-width: 104px;
+    max-width: 104px;
+    height: 104px;
+    min-height: 0;
+    flex: 0 0 104px;
+    padding: 6px;
+  }
+
   .item-image-container .position-absolute {
-    margin: 8px !important;
-    padding: 3px 8px !important;
-    font-size: 0.58rem !important;
+    margin: 6px !important;
+    padding: 2px 6px !important;
+    font-size: 0.5rem !important;
     letter-spacing: 0 !important;
   }
 
@@ -1083,18 +1158,38 @@ html, body {
     padding: 10px !important;
   }
 
-  .item-card h5,
+  .admin-item-card .admin-item-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px 8px 8px 9px !important;
+  }
+
+  .admin-item-card h5 {
+    font-size: 0.76rem !important;
+    line-height: 1.2;
+    margin-bottom: 2px !important;
+  }
+
   .user-card h5 {
-    font-size: 0.88rem !important;
+    font-size: 0.82rem !important;
     line-height: 1.25;
   }
 
-  .item-card .card-text {
+  .admin-item-card .card-text {
+    font-size: 0.66rem !important;
+    line-height: 1.25;
     -webkit-line-clamp: 2 !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 8px !important;
   }
 
-  .item-card .rounded-circle,
+  .admin-item-card .rounded-circle {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    font-size: 10px !important;
+    margin-right: 5px !important;
+  }
+
   .user-card .rounded-circle {
     width: 34px !important;
     height: 34px !important;
@@ -1102,44 +1197,103 @@ html, body {
     margin-right: 8px !important;
   }
 
-  .item-card .small,
+  .admin-item-card .small,
+  .admin-item-card small {
+    font-size: 0.6rem !important;
+    line-height: 1.2;
+  }
+
+  .admin-item-card .d-flex.align-items-center.mb-2 {
+    margin-bottom: 6px !important;
+  }
+
+  .admin-item-card .d-flex.align-items-center.mb-2 > div:last-child {
+    min-width: 0;
+  }
+
+  .admin-item-card .d-flex.align-items-center.mb-2 > div:last-child > div,
+  .admin-item-card small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    display: block;
+  }
+
+  .admin-item-card .d-flex.align-items-center.mb-2 > div:last-child > div {
+    font-size: 0.72rem !important;
+    line-height: 1.15;
+  }
+
+  .admin-item-card .d-flex.justify-content-between.small {
+    gap: 6px;
+  }
+
+  .admin-item-card .badge {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.55rem;
+  }
+
+  .admin-item-card .border-top.mt-auto {
+    gap: 6px;
+  }
+
+  .admin-item-card .pt-3 {
+    padding-top: 7px !important;
+  }
+
+  .admin-item-card .mb-3 {
+    margin-bottom: 7px !important;
+  }
+
+  .admin-image-placeholder {
+    gap: 5px;
+    font-size: 0.58rem;
+    border-radius: 9px;
+  }
+
+  .admin-image-placeholder svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .user-card .small,
-  .item-card small,
   .user-card small {
     font-size: 0.7rem !important;
   }
 
-  .item-card .pt-3 {
-    padding-top: 8px !important;
-  }
-
-  .item-card .mb-3,
   .user-card .mb-3 {
     margin-bottom: 10px !important;
   }
 
   .action-buttons {
     width: auto !important;
-    gap: 6px !important;
+    gap: 4px !important;
     justify-content: flex-end !important;
     flex-wrap: nowrap !important;
+    flex: 0 0 auto;
   }
 
   .action-buttons button,
   .admin-icon-btn {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    min-height: 32px !important;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
     padding: 0 !important;
-    border-radius: 10px !important;
-    flex: 0 0 32px !important;
+    border-radius: 8px !important;
+    flex: 0 0 26px !important;
   }
 
   .action-buttons svg,
   .admin-icon-btn svg {
-    width: 13px;
-    height: 13px;
+    width: 11px;
+    height: 11px;
   }
 
   .user-card .row.g-2 .rounded-3 {
@@ -1312,6 +1466,15 @@ html, body {
     padding: 7px;
   }
 
+  .admin-item-card .admin-item-image-frame {
+    width: 96px;
+    min-width: 96px;
+    max-width: 96px;
+    height: 96px;
+    min-height: 0;
+    flex-basis: 96px;
+  }
+
   .admin-report-modal-overlay > .admin-report-modal {
     width: min(100%, 326px) !important;
   }
@@ -1329,6 +1492,15 @@ html, body {
   .admin-report-image-frame {
     height: 112px;
     padding: 7px;
+  }
+
+  .admin-item-card .admin-item-image-frame {
+    width: 96px;
+    min-width: 96px;
+    max-width: 96px;
+    height: 96px;
+    min-height: 0;
+    flex-basis: 96px;
   }
 
   .item-card .d-flex.justify-content-between.small {

@@ -30,10 +30,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  bio: {
-    type: String,
-    default: "",
-  },
   location: {
     type: String,
     default: "",

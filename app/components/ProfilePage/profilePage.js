@@ -230,10 +230,8 @@ export default function ProfilePage() {
         duration: 1500
       });
       
-    
-      setTimeout(() => {
-        router.replace("/loginPage");
-      }, 1000);
+      router.replace("/loginPage");
+      router.refresh();
       
     } catch (err) {
       console.error("Logout error:", err);

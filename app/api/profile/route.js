@@ -25,7 +25,6 @@ export async function GET(req) {
   role: user.role,
 
   avatar: user.avatar,
-  bio: user.bio,
   location: user.location,
   joinDate: user.createdAt,
 });
@@ -51,7 +50,6 @@ export async function PUT(req) {
         name: body.name,
         email: body.email,
         phone: body.phone,
-        bio: body.bio,
         location: body.location,
         avatar: body.avatar,
       },
@@ -64,7 +62,6 @@ export async function PUT(req) {
       email: updatedUser.email,
       phone: updatedUser.phone,
       role: updatedUser.role,
-      bio: updatedUser.bio,
       location: updatedUser.location,
       avatar: updatedUser.avatar,
       joinDate: updatedUser.createdAt,

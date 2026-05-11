@@ -75,8 +75,10 @@ export async function sendMatchEmail(toEmail, lostItem, foundItem, score) {
     });
 
     console.log("Match email sent to:", toEmail);
+    return { sent: true };
 
   } catch (error) {
     console.error("Email sending error:", error);
+    return { sent: false, reason: error.message };
   }
 }

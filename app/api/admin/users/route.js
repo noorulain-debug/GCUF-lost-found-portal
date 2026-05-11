@@ -63,7 +63,6 @@ export async function GET(req) {
       phone: user.phone,
       role: user.role,
       avatar: user.avatar,
-      bio: user.bio,
       location: user.location,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

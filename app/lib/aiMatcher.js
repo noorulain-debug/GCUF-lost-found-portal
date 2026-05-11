@@ -2,7 +2,7 @@ import Item from "@/app/models/items";
 import { sendMatchEmail } from "@/app/lib/sendEmail";
 
 const DEFAULT_MODEL = "Xenova/all-MiniLM-L6-v2";
-const DEFAULT_THRESHOLD = 0.5;
+const DEFAULT_THRESHOLD = 0.4;
 
 let extractorPromise;
 
@@ -125,10 +125,10 @@ async function notifyLostUser(lostItem, foundItem, score) {
   const lostEmail = lostItem.user?.email;
 
   if (!lostEmail) {
-    return;
+    return { sent: false, reason: "lost item user has no email address" };
   }
 
-  await sendMatchEmail(lostEmail, lostItem, foundItem, score);
+  return sendMatchEmail(lostEmail, lostItem, foundItem, score);
 }
 
 export async function findAndNotifyMatches(newItem) {
@@ -142,9 +142,11 @@ export async function findAndNotifyMatches(newItem) {
     item.embedding = await ensureEmbedding(item);
 
     const oppositeType = item.type === "found" ? "lost" : "found";
+    const currentUserId = item.user?._id || item.user;
+
     const candidates = await Item.find({
       type: oppositeType,
-      user: { $ne: item.user._id },
+      ...(currentUserId ? { user: { $ne: currentUserId } } : {}),
     }).populate("user", "email");
 
     const matches = [];
@@ -157,18 +159,34 @@ export async function findAndNotifyMatches(newItem) {
       const foundItem = item.type === "found" ? item : candidate;
       const score = calculateWeightedScore(lostItem, foundItem);
 
+      const scorePercent = Math.round(score * 100);
+      const thresholdPercent = Math.round(threshold * 100);
+      const isMatch = score >= threshold;
+
       console.log(
-        `AI match score ${Math.round(score * 100)}%: ${lostItem.title} -> ${foundItem.title}`
+        `[AI match check] ${lostItem.title} -> ${foundItem.title}: ${scorePercent}% match, threshold ${thresholdPercent}%, matched: ${isMatch ? "yes" : "no"}`
       );
 
-      if (score >= threshold) {
+      if (isMatch) {
         matches.push({
           lostItemId: lostItem._id,
           foundItemId: foundItem._id,
           score,
         });
 
-        await notifyLostUser(lostItem, foundItem, score);
+        const emailResult = await notifyLostUser(lostItem, foundItem, score);
+
+        console.log(
+          `[AI match email] ${lostItem.title} -> ${foundItem.title}: ${
+            emailResult?.sent
+              ? `sent to ${lostItem.user?.email}`
+              : `not sent (${emailResult?.reason || "unknown reason"})`
+          }`
+        );
+      } else {
+        console.log(
+          `[AI match email] ${lostItem.title} -> ${foundItem.title}: not sent because score is below ${thresholdPercent}%`
+        );
       }
     }
 

@@ -52,7 +52,8 @@ export default function ProfessionalLogin() {
     });
 
     if (res.ok) {
-      router.push("/browse");
+      router.replace("/");
+      router.refresh();
     } else {
       const data = await res.json();
       toast.error(data.message || "Login Failed. Please check your credentials.");
@@ -373,7 +374,7 @@ export default function ProfessionalLogin() {
 
                   <div className="text-center mt-3">
                     <p className="mb-2" style={{ color: '#764ba2' }}>
-                      Don't have an account?{" "}
+                      Don&apos;t have an account?{" "}
                       <a href="/signup" className="fw-bold text-decoration-none" style={{ color: '#667eea' }}>
                         Sign up
                       </a>
