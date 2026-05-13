@@ -1,3 +1,4 @@
+import { HfInference } from "@huggingface/inference";
 import Item from "@/app/models/items";
 import { sendMatchEmail } from "@/app/lib/sendEmail";
 
@@ -29,6 +30,9 @@ export function getItemMatchText(item) {
     .join(". ");
 }
 
+
+const hf = new HfInference(process.env.HF_API_KEY);
+
 export async function createItemEmbedding(item) {
   const text = getItemMatchText(item);
 
@@ -37,33 +41,12 @@ export async function createItemEmbedding(item) {
   }
 
   try {
-    const response = await fetch(
-      "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.HF_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inputs: text,
-        }),
-      }
-    );
+    const result = await hf.featureExtraction({
+      model: "sentence-transformers/all-MiniLM-L6-v2",
+      inputs: text,
+    });
 
-    if (!response.ok) {
-      throw new Error(
-        `HuggingFace API error: ${response.status}`
-      );
-    }
-
-    const result = await response.json();
-
-    const embedding = Array.isArray(result[0])
-      ? result[0]
-      : result;
-
-    return embedding;
+    return result;
   } catch (error) {
     console.error(
       "AI embedding generation failed:",
