@@ -25,7 +25,7 @@ export async function sendMatchEmail(toEmail, lostItem, foundItem, score) {
       subject: "Possible Match Found For Your Lost Item",
       html: `
         <div style="font-family: Arial; padding: 20px;">
-          <h2 style="color: #667eea;">
+          <h2 style="color: #2563eb;">
             Possible Match Found
           </h2>
 
@@ -44,6 +44,7 @@ export async function sendMatchEmail(toEmail, lostItem, foundItem, score) {
           <h3>Your Lost Item</h3>
           <p><b>Title:</b> ${lostItem.title}</p>
           <p><b>Description:</b> ${lostItem.description}</p>
+           <p><b>Location:</b> ${lostItem.location}</p>
 
           <h3>Found Item</h3>
           <p><b>Title:</b> ${foundItem.title}</p>
@@ -53,9 +54,9 @@ export async function sendMatchEmail(toEmail, lostItem, foundItem, score) {
           <br />
 
           <a 
-            href="http://localhost:3000/browse"
+            href="https://gcuf-portal-gilt.vercel.app/"
             style="
-              background: #667eea;
+              background: #2563eb;
               color: white;
               padding: 12px 20px;
               text-decoration: none;
@@ -82,3 +83,4 @@ export async function sendMatchEmail(toEmail, lostItem, foundItem, score) {
     return { sent: false, reason: error.message };
   }
 }
+

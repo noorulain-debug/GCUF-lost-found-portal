@@ -760,7 +760,7 @@ export default function Browse() {
           }
         }
         
-        /* Image click to expand */
+        /* Image click to expand  */
         .clickable-image {
           cursor: pointer;
         }

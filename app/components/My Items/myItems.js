@@ -330,31 +330,31 @@ export default function MyItemsPage() {
         .glass-effect {
           backdrop-filter: blur(10px);
           background: rgba(255, 255, 255, 0.92);
-          border: 1px solid rgba(102, 126, 234, 0.1);
+          border: 1px solid rgba(37, 99, 235, 0.1);
           border-radius: 16px;
         }
 
         .stat-card {
           background: linear-gradient(
             135deg,
-            rgba(102, 126, 234, 0.05) 0%,
-            rgba(118, 75, 162, 0.05) 100%
+            rgba(37, 99, 235, 0.05) 0%,
+            rgba(20, 184, 166, 0.05) 100%
           );
           border-radius: 16px;
-          border: 2px solid rgba(102, 126, 234, 0.1);
+          border: 2px solid rgba(37, 99, 235, 0.1);
           transition: all 0.3s ease;
           min-height: 96px;
         }
 
         .stat-card:hover {
           transform: translateY(-5px);
-          box-shadow: 0 15px 30px rgba(102, 126, 234, 0.15);
-          border-color: rgba(102, 126, 234, 0.3);
+          box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
+          border-color: rgba(37, 99, 235, 0.3);
         }
 
         .item-card {
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          border: 1px solid rgba(102, 126, 234, 0.1);
+          border: 1px solid rgba(37, 99, 235, 0.1);
           border-radius: 16px;
           overflow: hidden;
           background: white;
@@ -362,7 +362,7 @@ export default function MyItemsPage() {
 
         .item-card:hover {
           transform: translateY(-10px);
-          box-shadow: 0 25px 50px rgba(102, 126, 234, 0.15),
+          box-shadow: 0 25px 50px rgba(37, 99, 235, 0.15),
             0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
@@ -371,7 +371,7 @@ export default function MyItemsPage() {
           letter-spacing: 0.5px;
           padding: 2px 8px;
           border-radius: 20px;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+          box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
           text-transform: uppercase;
           font-size: 0.7rem;
         }
@@ -381,19 +381,23 @@ export default function MyItemsPage() {
           letter-spacing: 0.5px;
           padding: 2px 8px;
           border-radius: 20px;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+          box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
           text-transform: uppercase;
           font-size: 0.7rem;
         }
 
         .image-container {
-          height: 200px;
+          aspect-ratio: 4 / 3;
+          height: auto;
           overflow: hidden;
           border-radius: 16px 16px 0 0;
+          background: #f4f6fb;
         }
 
         .image-container img {
-          transition: transform 0.6s ease;
+          object-fit: contain;
+          background: #f4f6fb;
+          transition: transform 0.2s ease;
         }
 
         .my-item-placeholder {
@@ -418,7 +422,7 @@ export default function MyItemsPage() {
         }
 
         .item-card:hover .image-container img {
-          transform: scale(1.1);
+          transform: scale(1.02);
         }
 
         .modal-backdrop-custom {
@@ -460,7 +464,7 @@ export default function MyItemsPage() {
 
         .modal-footer-custom {
           padding: 20px 24px;
-          border-top: 1px solid rgba(102, 126, 234, 0.1);
+          border-top: 1px solid rgba(37, 99, 235, 0.1);
           display: flex;
           justify-content: flex-end;
           gap: 12px;
@@ -489,7 +493,7 @@ export default function MyItemsPage() {
         }
 
         .form-control-custom {
-          border: 1px solid rgba(102, 126, 234, 0.2);
+          border: 1px solid rgba(37, 99, 235, 0.2);
           border-radius: 10px;
           padding: 12px 16px;
           font-size: 14px;
@@ -501,22 +505,22 @@ export default function MyItemsPage() {
         .form-control-custom:focus {
           outline: none;
           border-color: #667eea;
-          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .image-upload-container {
-          border: 2px dashed rgba(102, 126, 234, 0.3);
+          border: 2px dashed rgba(37, 99, 235, 0.3);
           border-radius: 12px;
           padding: 20px;
           text-align: center;
-          background: rgba(102, 126, 234, 0.03);
+          background: rgba(37, 99, 235, 0.03);
           cursor: pointer;
           transition: all 0.2s ease;
           margin-bottom: 16px;
         }
 
         .image-upload-container:hover {
-          background: rgba(102, 126, 234, 0.08);
+          background: rgba(37, 99, 235, 0.08);
           border-color: #667eea;
         }
 
@@ -530,7 +534,8 @@ export default function MyItemsPage() {
         .image-preview img {
           width: 100%;
           height: auto;
-          object-fit: cover;
+          object-fit: contain;
+          background: #f4f6fb;
         }
 
         .btn-primary-custom {
@@ -546,7 +551,7 @@ export default function MyItemsPage() {
 
         .btn-primary-custom:hover:not(:disabled) {
           transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+          box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
         }
 
         .btn-primary-custom:disabled {
@@ -566,7 +571,7 @@ export default function MyItemsPage() {
         }
 
         .btn-outline-custom:hover {
-          background: rgba(102, 126, 234, 0.1);
+          background: rgba(37, 99, 235, 0.1);
         }
 
         .btn-danger-custom {
@@ -586,7 +591,7 @@ export default function MyItemsPage() {
         }
 
         .btn-success-custom {
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
           border: none;
           border-radius: 10px;
@@ -598,7 +603,7 @@ export default function MyItemsPage() {
 
         .btn-success-custom:hover:not(:disabled) {
           transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+          box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
 
         .action-btn {
@@ -631,7 +636,7 @@ export default function MyItemsPage() {
 
         .action-btn:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
         
         /* Mobile Responsive Styles - COMPACT */
@@ -666,7 +671,8 @@ export default function MyItemsPage() {
           }
           
           .image-container {
-            height: 100px !important;
+            aspect-ratio: 4 / 3;
+            height: auto !important;
           }
           
           .item-card .card-body {
@@ -733,7 +739,7 @@ export default function MyItemsPage() {
 
           .edit-modal .image-preview img {
             height: 140px !important;
-            object-fit: cover;
+            object-fit: contain;
           }
 
           .edit-modal .image-upload-container {
@@ -830,7 +836,8 @@ export default function MyItemsPage() {
           }
           
           .image-container {
-            height: 90px !important;
+            aspect-ratio: 4 / 3;
+            height: auto !important;
           }
 
           .my-item-placeholder {
@@ -1029,7 +1036,7 @@ export default function MyItemsPage() {
                   placeholder="Search your items..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{ borderColor: "rgba(102, 126, 234, 0.2)" }}
+                  style={{ borderColor: "rgba(37, 99, 235, 0.2)" }}
                 />
               </div>
             </div>
@@ -1189,8 +1196,9 @@ export default function MyItemsPage() {
                     {item.imageUrl ? (
                       <img
                         src={item.imageUrl}
-                        className="card-img-top w-100 h-100 object-cover"
+                        className="card-img-top w-100 h-100 object-contain"
                         alt={item.title}
+                        loading="lazy"
                       />
                     ) : (
                       <div className="my-item-placeholder">
@@ -1273,7 +1281,7 @@ export default function MyItemsPage() {
                       <span
                         className="badge item-category-badge"
                         style={{
-                          background: "rgba(102, 126, 234, 0.1)",
+                          background: "rgba(37, 99, 235, 0.1)",
                           color: "#667eea",
                           textTransform: "capitalize",
                         }}
@@ -1295,7 +1303,7 @@ export default function MyItemsPage() {
                                 role="status"
                               ></span>
                             ) : (
-                              <div style={{ color: "#667eea" }}>
+                              <div style={{ color: "#4fe263" }}>
                                 <FaCheck size={12} />
                               </div>
                             )}
@@ -1316,7 +1324,7 @@ export default function MyItemsPage() {
                             document.body.style.overflow = "hidden";
                           }}
                         >
-                          <div style={{ color: "#667eea" }}>
+                          <div style={{ color: "#f05020" }}>
                             <FaTrash size={12} />
                           </div>
                         </button>
@@ -1560,3 +1568,5 @@ export default function MyItemsPage() {
     </>
   );
 }
+
+

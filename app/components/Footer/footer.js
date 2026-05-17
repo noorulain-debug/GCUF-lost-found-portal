@@ -21,7 +21,7 @@ export default function Footer() {
       <style jsx>{`
         .social-icon:hover {
           transform: translateY(-3px);
-          box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+          box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
           color: white !important;
           border-color: transparent !important;
@@ -51,10 +51,10 @@ export default function Footer() {
           <div className="col-12 col-lg-4">
             <div className="d-flex align-items-center mb-3">
               <div
-                className="me-3 rounded-3 p-2 flex-shrink-0"
+                className="me-3 rounded-3 p-1 flex-shrink-0"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%)',
-                  border: '1px solid rgba(102,126,234,0.2)'
+                  background: 'linear-gradient(135deg, rgba(37, 99, 235,0.1) 0%, rgba(20, 184, 166,0.1) 100%)',
+                  border: '1px solid rgba(37, 99, 235,0.2)'
                 }}
               >
                 <img
@@ -100,9 +100,9 @@ export default function Footer() {
                     className="d-flex align-items-center justify-content-center rounded-circle social-icon"
                     style={{
                       width: '28px', height: '28px',
-                      background: 'linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%)',
+                      background: 'linear-gradient(135deg, rgba(37, 99, 235,0.2) 0%, rgba(20, 184, 166,0.2) 100%)',
                       color: '#667eea',
-                      border: '1px solid rgba(102,126,234,0.3)',
+                      border: '1px solid rgba(37, 99, 235,0.3)',
                       transition: 'all 0.3s ease'
                     }}
                   >
@@ -143,15 +143,15 @@ export default function Footer() {
             <ul className="list-unstyled mb-0">
               <li className="mb-3 d-flex align-items-start gap-2">
                 <FaMapMarkerAlt size={13} style={{ color: '#667eea', marginTop: '3px', flexShrink: 0 }} />
-                <span className="text-light opacity-75 small" style={{ fontSize: '0.7rem' }}>GCUF Campus, Faisalabad</span>
+                <span className="text-light opacity-75 small" style={{ fontSize: '0.65rem' }}>GCUF Campus, Faisalabad</span>
               </li>
               <li className="mb-3 d-flex align-items-start gap-2">
                 <FaPhone size={13} style={{ color: '#667eea', marginTop: '3px', flexShrink: 0 }} />
-                <span className="text-light opacity-75 small" style={{ fontSize: '0.7rem' }}>+92 3208711060</span>
+                <span className="text-light opacity-75 small" style={{ fontSize: '0.65rem' }}>+92 3208711060</span>
               </li>
               <li className="d-flex align-items-start gap-2">
                 <FaEnvelope size={13} style={{ color: '#667eea', marginTop: '3px', flexShrink: 0 }} />
-                <span className="text-light opacity-75 small contact-email" style={{ fontSize: '0.7rem' }}>lostfoundgcuf@gmail.com </span>
+                <span className="text-light opacity-75 small contact-email" style={{ fontSize: '0.65rem' }}>lostfoundgcuf@gmail.com </span>
               </li>
             </ul>
           </div>
@@ -161,8 +161,8 @@ export default function Footer() {
             <div
               className="p-2 h-100 rounded-4"
               style={{
-                background: 'linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%)',
-                border: '1px solid rgba(102,126,234,0.2)',
+                background: 'linear-gradient(135deg, rgba(37, 99, 235,0.05) 0%, rgba(20, 184, 166,0.05) 100%)',
+                border: '1px solid rgba(37, 99, 235,0.2)',
                 backdropFilter: 'blur(10px)'
               }}
             >
@@ -201,7 +201,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <hr className="my-4" style={{ borderColor: 'rgba(102,126,234,0.3)', opacity: 0.5 }} />
+        <hr className="my-4" style={{ borderColor: 'rgba(37, 99, 235,0.3)', opacity: 0.5 }} />
 
         {/* Copyright row */}
         <div className="row align-items-center gy-2">
@@ -251,3 +251,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+
